@@ -50,7 +50,7 @@ Una vez que el servidor esté en funcionamiento, acceda a
 http://localhost:35000/ desde su navegador para comenzar a buscar películas.
 
 
-Puede colocar http://localhost:35000/image  para ver la imagen del servidor
+Puede colocar http://localhost:35000/image.jpg  para ver la imagen del servidor
 
 ### Diseño y Extensibilidad
 El proyecto está diseñado de manera modular y extensible para permitir futuras expansiones y cambios en la funcionalidad del servidor. Algunas consideraciones sobre el diseño y la extensibilidad incluyen:
