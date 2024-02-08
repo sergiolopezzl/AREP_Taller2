@@ -1,25 +1,27 @@
 ### Sergio Daniel Lopez Vargas
 # AREP_Taller2
-Este Taller implementa un servidor web en Java que permite a los usuarios 
-buscar información sobre películas utilizando la API gratuita OMDb API. 
+Este Taller maneja solicitudes HTTP entrantes y proporcionar respuestas adecuadas tanto para archivos estáticos como para detalles de películas.. 
 La aplicación proporciona una interfaz simple a través de un navegador 
 web donde los usuarios pueden ingresar el título de la película y obtener 
 detalles sobre la misma en formato JSON.
-Proporciona una base sólida para desarrollar un servidor web 
-modular y extensible para consultar información sobre películas, 
-utilizando patrones de diseño y buenas prácticas de programación.
 
 ### Funcionamiento
-La aplicación funciona al ejecutarla localmente en un entorno Java 
-con Maven instalado y conexión a internet. Los usuarios pueden acceder 
-al servidor a través de un navegador web y utilizar el formulario en la 
-página principal para realizar búsquedas de películas.
 
-### Usa patrones
-Se hace uso del patrón de diseño de inversión de dependencias y
-el uso de las clases HttpMovie y HttpServer. Esto permite que el servidor
-HTTP (HttpServer) no dependa directamente de la implementación
-concreta de la API de películas.
+La clase HttpServer implementa un servidor HTTP simple que puede manejar solicitudes de clientes y responder con archivos estáticos o detalles de películas.
+
+El servidor escucha en un puerto específico (por defecto, el puerto 35000) y maneja las solicitudes entrantes de los clientes. Puede responder con archivos estáticos como HTML, CSS, JavaScript e imágenes, así como también puede proporcionar detalles de películas consultando un servicio externo.
+
+La funcionalidad clave de la clase HttpServer se divide en varios métodos:
+
+start(): Inicia el servidor HTTP y comienza a escuchar las solicitudes entrantes en un bucle infinito.
+handleClient(ServerSocket serverSocket): Maneja la solicitud de un cliente aceptando la conexión del cliente, leyendo la URI de la solicitud y enviando la respuesta adecuada al cliente.
+extractURI(BufferedReader in): Extrae la URI de la solicitud HTTP analizando la primera línea de la solicitud.
+sendFileResponse(OutputStream out, String uriStr): Envía la respuesta del archivo al cliente, incluyendo el encabezado HTTP y el cuerpo del archivo.
+sendFile(String filePath): Lee el contenido de un archivo y lo devuelve como una cadena de texto.
+sendMovieResponse(String uriStr): Envía la respuesta de la película al cliente, buscando los detalles de la película utilizando la instancia de HttpMovie y reemplazando los marcadores de posición en una plantilla HTML.
+extractMovieTitle(String uriStr): Extrae el título de la película de la URI de la solicitud.
+Image(String pathFile): Lee y devuelve la imagen como un arreglo de bytes.
+getContentType(String filePath): Obtiene el tipo de contenido del archivo según su extensión.
 
 ### Modular
 El proyecto está organizado en módulos claros y distintos:
@@ -50,18 +52,19 @@ Una vez que el servidor esté en funcionamiento, acceda a
 http://localhost:35000/ desde su navegador para comenzar a buscar películas.
 
 
-Puede colocar http://localhost:35000/image.jpg  para ver la imagen del servidor
+Puede colocar http://localhost:35000/image.jpg  para ver la imagen del servidor y asi con cada archivo
 
 ### Diseño y Extensibilidad
 El proyecto está diseñado de manera modular y extensible para permitir futuras expansiones y cambios en la funcionalidad del servidor. Algunas consideraciones sobre el diseño y la extensibilidad incluyen:
 
-* Interfaz de Servicio: El servidor utiliza la clase HttpMovie para abstraer la lógica de consulta de películas. Esto permite que diferentes implementaciones de servicios de consulta puedan ser fácilmente intercambiadas.
+* Interfaz de Servicio:
+  El proyecto sigue un enfoque basado en interfaces, lo que facilita la creación de implementaciones alternativas para diferentes partes del sistema. Por ejemplo, la interfaz HttpMovie define un contrato para interactuar con un servicio externo de detalles de películas, lo que permite la implementación de diferentes servicios de películas con APIs distintas sin modificar el código existente.
 
-* Implementación de Proveedores de Servicios: Se pueden crear nuevas clases que implementen a HttpMovie para manejar diferentes proveedores de servicios de consulta de películas. Por ejemplo, se puede implementar un nuevo proveedor de servicio que utilice una API diferente para obtener información sobre películas.
+* Implementación de Proveedores de Servicios:
+  La clase HttpMovie sirve como un proveedor de servicios para obtener detalles de películas de un servicio externo, como OMDB API en este caso. Esta implementación se puede cambiar fácilmente para utilizar otro servicio de detalles de películas o para agregar múltiples proveedores de servicios y alternar entre ellos según sea necesario.
 
-* Configurabilidad: La aplicación está configurada para escuchar en el puerto 35000, pero este valor se puede cambiar fácilmente modificando la configuración en la clase HttpServer.
+* Configurabilidad:
+  El proyecto se configura fácilmente mediante variables y parámetros definidos en el código. Por ejemplo, la configuración del puerto del servidor y la ubicación del directorio público se definen como constantes en la clase HttpServer, lo que facilita su ajuste según los requisitos del entorno de implementación.
 
-* Manejo de Errores: El servidor está diseñado para manejar errores de consulta de manera adecuada y proporcionar retroalimentación al usuario en caso de que no se encuentre la película solicitada.
-
-
-
+* Manejo de Errores:
+  El proyecto incluye mecanismos para manejar errores de manera adecuada y proporcionar retroalimentación útil en caso de fallos. Por ejemplo, se registran mensajes de error detallados en la consola en caso de que ocurran excepciones durante el manejo de solicitudes HTTP o la obtención de detalles de películas.
