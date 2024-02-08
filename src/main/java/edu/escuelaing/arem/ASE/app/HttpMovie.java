@@ -1,12 +1,13 @@
 package edu.escuelaing.arem.ASE.app;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 /*
  * Documentación de la clase HttpMovie
@@ -20,67 +21,40 @@ public class HttpMovie {
     private static final String USER_AGENT = "Mozilla/5.0";
     private static final String API_KEY = "95abfe39";
     private static final String BASE_URL = "http://www.omdbapi.com/?apikey=" + API_KEY + "&t=";
+    private final Cache cache;
 
-    /**
-     * Realiza una solicitud HTTP al servicio OMDB API para obtener información sobre una película
-     * utilizando su título como parámetro de búsqueda.
-     * @param URIStr La cadena que contiene la URI con el título de la película.
-     * @return Un objeto JsonObject que contiene la información de la película obtenida de la API OMDB.
-     * @throws IOException Si ocurre un error durante la conexión o la lectura de la respuesta HTTP.
-     */
+    public HttpMovie() {
+        this.cache = Cache.getInstance();
+    }
+
     public JsonObject get(String URIStr) throws IOException {
-        String movieTitle = extractMovieTitle(URIStr);
-
-        if (Cache.getInstance().contains(movieTitle)) {
-            System.out.println("The movie is in the cache");
-            return Cache.getInstance().get(movieTitle);
+        if (cache.movieInCache(URIStr)) {
+            return cache.getMovie(URIStr);
         }
 
-        String apiUrl = BASE_URL + movieTitle;
-        System.out.println("API URL: " + apiUrl);
+        URL obj = new URL(BASE_URL + URIStr);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", USER_AGENT);
 
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(apiUrl);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", USER_AGENT);
+        int responseCode = con.getResponseCode();
+        System.out.println("GET Response Code :: " + responseCode);
 
-            int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
                 StringBuilder response = new StringBuilder();
-
+                String inputLine;
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
-                in.close();
-
-                System.out.println("Response: " + response.toString());
-                Cache.getInstance().add(movieTitle, JsonParser.parseString(response.toString()).getAsJsonObject());
-            } else {
-                System.out.println("GET request failed");
+                JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
+                cache.addMovieToCache(URIStr, jsonResponse);
+                System.out.println(response.toString());
+                return jsonResponse;
             }
-        } catch (IOException e) {
-            System.err.println("Error making HTTP request: " + e.getMessage());
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+        } else {
+            System.out.println("No se realizó la petición");
         }
-        System.out.println("GET DONE");
-        return Cache.getInstance().get(movieTitle);
-    }
-
-    /**
-     * Extrae el título de la película de la URI proporcionada.
-     * @param URIStr La cadena de URI que contiene el título de la película.
-     * @return El título de la película.
-     */
-    private String extractMovieTitle(String URIStr) {
-        return URIStr.split("=")[1];
+        return Cache.getInstance().getMovie(URIStr);
     }
 }

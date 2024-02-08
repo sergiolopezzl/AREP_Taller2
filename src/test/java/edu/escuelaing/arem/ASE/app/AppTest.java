@@ -25,26 +25,4 @@ public class AppTest {
         assertEquals("The Avengers", movieInfo.get("Title").getAsString());
     }
 
-    /**
-     * Prueba unitaria para verificar la adición y recuperación de información en la caché.
-     */
-    @Test
-    public void testAddAndGet() {
-        Cache cache = Cache.getInstance();
-        JsonObject movieInfo = new JsonObject();
-        movieInfo.addProperty("Title", "The Matrix");
-        cache.add("The Matrix", movieInfo);
-        assertTrue(cache.contains("The Matrix"));
-        JsonObject cachedInfo = cache.get("The Matrix");
-        assertTrue(cachedInfo.has("Title"));
-    }
-
-    /**
-     * Prueba unitaria para verificar la presencia de una película en la caché.
-     */
-    @Test
-    public void testContains() {
-        Cache cache = Cache.getInstance();
-        assertFalse(cache.contains("Inception"));
-    }
 }

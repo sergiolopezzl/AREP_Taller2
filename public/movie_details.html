@@ -1,87 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles de la película</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .poster {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .movie-details {
-            display: flex;
-            align-items: flex-start;
-        }
-        .details {
-            flex: 1;
-        }
-        .title {
-            font-size: 24px;
-            margin: 0 0 10px;
-        }
-        .info span {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .plot {
-            font-style: italic;
-            margin-top: 20px;
-        }
-        .clear-button {
-            text-align: center;
-        }
-        .clear-button button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .clear-button button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="movie-details">
-        <img src="#" alt="Movie Poster" class="poster">
-        <div class="details">
-            <h2 class="title">Título de la película</h2>
-            <div class="info">
-                <span>Released: Fecha de lanzamiento</span>
-                <span>Género: Género de la película</span>
-                <span>Director: Director de la película</span>
-                <span>Actores: Actores principales</span>
-                <span>Idioma: Idioma de la película</span>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap">
+        <link rel="stylesheet" href="css/movie.css">
+        <title>Detalles de la película</title>
+    </head>
+    <body>
+        <div class="card">
+            <img src="{Poster}" alt="Movie Poster" class="poster">
+            <div class="details">
+                <h2 class="title">{Title}</h2>
+                <div class="info">
+                    <span>Fecha de lanzamiento: {Released}</span>
+                    <span>Género de la película: {Genre}</span>
+                    <span>Director de la película: {Director}</span>
+                    <span>Actores principales: {Actors}</span>
+                    <span>Idioma de la película: {Language}</span>
+                </div>
+                <p class="plot">{Plot}</p>
+                <a href="/">
+                    <button>Limpiar</button>
+                </a>
             </div>
-            <p class="plot">Resumen de la trama</p>
         </div>
-    </div>
-    <div class="clear-button">
-        <a href="/">
-            <button>Limpiar</button>
-        </a>
-    </div>
-</div>
-</body>
+    </body>
 </html>

@@ -1,4 +1,9 @@
 package edu.escuelaing.arem.ASE.app;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Documentación de la clase App
  * Autor: Sergio López
@@ -13,9 +18,7 @@ public class App {
      * @param args Argumentos de la línea de comandos (no utilizados).
      */
     public static void main(String[] args) {
-        // Crea una instancia de HttpServer con un objeto HttpMovie como servicio.
-        //HttpServer server = new HttpServer(new HttpMovie());
-        // Inicia el servidor HTTP.
-        //server.start();
+        // Crea una instancia de HttpServer.
+        HttpServer.start();
     }
 }

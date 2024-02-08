@@ -1,0 +1,111 @@
+/* Estilos para el buscador de películas */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label, input[type="text"], input[type="button"] {
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="button"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="button"]:hover {
+    background-color: #45a049;
+}
+
+#getrespmsg {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* Estilos para los detalles de la película */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.movie-details {
+    display: flex;
+    align-items: flex-start;
+}
+
+.poster {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.details {
+    flex: 1;
+}
+
+.title {
+    font-size: 24px;
+    margin: 0 0 10px;
+}
+
+.info span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.plot {
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.clear-button {
+    text-align: center;
+}
+
+.clear-button button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.clear-button button:hover {
+    background-color: #45a049;
+}
